@@ -1,14 +1,16 @@
-import React from 'react';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Home from "./pages/home/index";
-import About from "./pages/about/index";
-import SignIn from "./pages/sign-in/index";
-import SignUp from "./pages/sign-up/index";
-import Profile from "./pages/profile/index";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/home";
+import About from "./pages/about";
+import SignIn from "./pages/sign-in";
+import SignUp from "./pages/sign-up";
+import Profile from "./pages/profile";
+import Header from "./components/header";
 
 function App() {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -17,7 +19,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

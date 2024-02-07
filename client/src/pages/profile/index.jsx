@@ -13,6 +13,8 @@ import {
   updateUserFailure,
   deleteUserSuccess,
   deleteUserFailure,
+  signOutSuccess,
+  signOutFailure
 } from "../../redux/user/userSlice.js";
 import { useNavigate } from "react-router-dom";
 
@@ -103,6 +105,21 @@ function Profile() {
     }
   };
 
+  const handleSignOut = async () => {
+     try {
+        const res = await fetch("/api/auth/signout")
+        const data = await res.json();
+        if(data.success === false) {
+          dispatch(signOutFailure(data.message))
+          return
+        }
+        dispatch(signOutSuccess(data))
+        navigate("/")
+     } catch (error) {
+      dispatch(signOutFailure(error.message))
+     }
+  }
+
   // Firebase Image Storage
   // service firebase.storage {
   //   match /b/{bucket}/o {
@@ -178,7 +195,7 @@ function Profile() {
         <span onClick={handleDelete} className="text-red-700 cursor-pointer">
           Delete Account
         </span>
-        <span className="text-red-700 cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
     </div>
   );

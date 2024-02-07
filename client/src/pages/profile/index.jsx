@@ -11,11 +11,15 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../../redux/user/userSlice.js";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [imagePercentage, setImagePercentage] = useState(0);
@@ -79,6 +83,23 @@ function Profile() {
       dispatch(updateUserSuccess(data));
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return
+      }
+      dispatch(deleteUserSuccess(data));
+      navigate("/sign-in");
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -154,14 +175,11 @@ function Profile() {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
+        <span onClick={handleDelete} className="text-red-700 cursor-pointer">
+          Delete Account
+        </span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
-      {error ? (
-        <p className="text-red-700">{error.message}</p>
-      ) : (
-        <p className="text-green-700">Successfully Updated!</p>
-      )}
     </div>
   );
 }

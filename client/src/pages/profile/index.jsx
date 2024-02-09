@@ -14,9 +14,9 @@ import {
   deleteUserSuccess,
   deleteUserFailure,
   signOutSuccess,
-  signOutFailure
+  signOutFailure,
 } from "../../redux/user/userSlice.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Profile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -96,7 +96,7 @@ function Profile() {
       const data = res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
-        return
+        return;
       }
       dispatch(deleteUserSuccess(data));
       navigate("/sign-in");
@@ -106,19 +106,19 @@ function Profile() {
   };
 
   const handleSignOut = async () => {
-     try {
-        const res = await fetch("/api/auth/signout")
-        const data = await res.json();
-        if(data.success === false) {
-          dispatch(signOutFailure(data.message))
-          return
-        }
-        dispatch(signOutSuccess(data))
-        navigate("/")
-     } catch (error) {
-      dispatch(signOutFailure(error.message))
-     }
-  }
+    try {
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutFailure(data.message));
+        return;
+      }
+      dispatch(signOutSuccess(data));
+      navigate("/");
+    } catch (error) {
+      dispatch(signOutFailure(error.message));
+    }
+  };
 
   // Firebase Image Storage
   // service firebase.storage {
@@ -190,12 +190,21 @@ function Profile() {
         >
           {loading ? "Loading..." : "Update"}
         </button>
+
+        <Link
+          to="/create-listing"
+          className="bg-green-700 text-center text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+        >
+          Create Listing
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <span onClick={handleDelete} className="text-red-700 cursor-pointer">
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          Sign Out
+        </span>
       </div>
     </div>
   );

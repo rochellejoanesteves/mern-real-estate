@@ -139,6 +139,23 @@ function Profile() {
     }
   };
 
+  const handleDeleteListing = async (id) => {
+    try {
+      const res = await fetch(`api/listing/delete/${id}`, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setUserListings((prev) => prev.filter((list) => list._id !== id));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   // Firebase Image Storage
   // service firebase.storage {
   //   match /b/{bucket}/o {
@@ -234,7 +251,9 @@ function Profile() {
 
       {userListings && userListings.length > 0 && (
         <div className="flex flex-col gap-4">
-          <h1 className="text-center mt-7 text-2xl font-semibold">Your Listings</h1>
+          <h1 className="text-center mt-7 text-2xl font-semibold">
+            Your Listings
+          </h1>
           {userListings.map((list) => (
             <div
               key={list._id}
@@ -256,7 +275,12 @@ function Profile() {
               </Link>
 
               <div className="flex flex-col items-center">
-                <button className="text-red-700 uppercase">Delete</button>
+                <button
+                  onClick={() => handleDeleteListing(list._id)}
+                  className="text-red-700 uppercase"
+                >
+                  Delete
+                </button>
                 <button className="text-green-700 uppercase">Edit</button>
               </div>
             </div>

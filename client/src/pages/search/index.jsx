@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ListingCard from "../../components/listingCard";
 
 function Search() {
   const navigate = useNavigate();
@@ -41,29 +42,28 @@ function Search() {
         furnished: furnishedFormUrl === "true" ? true : false,
         offer: offerFormUrl === "true" ? true : false,
         sort: sortFormUrl || "created_at",
-        order: orderFormUrl || "desc"
-      })
+        order: orderFormUrl || "desc",
+      });
     }
 
     const fetchListings = async () => {
-        try {
-          setLoading(true);
-          const searchQuery = urlParams.toString();
-          const res = await fetch(`/api/listing/get?${searchQuery}`);
-          const data = await res.json();
-          if (data.success === false) {
-            console.log(data.error)
-            return
-          }
-          setListing(data)
-          setLoading(false)
-        } catch (error) {
-          console.log(error)
+      try {
+        setLoading(true);
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        const data = await res.json();
+        if (data.success === false) {
+          console.log(data.error);
+          return;
         }
-    }
+        setListing(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-    fetchListings()
-
+    fetchListings();
   }, [location.search]);
 
   const handleChange = (e) => {
@@ -226,10 +226,27 @@ function Search() {
           </button>
         </form>
       </div>
-      <div className="">
+      <div className="flex-1">
         <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
           Listing results:
         </h1>
+        <div className="p-7 flex flex-wrap gap-4">
+          {!loading && listings.length === 0 && (
+            <p className="text-xl text-center text-slate-700">
+              No listing found!
+            </p>
+          )}
+          {loading && (
+            <p className="text-xl text-center text-slate-700 w-full">
+              Loading...
+            </p>
+          )}
+          {!loading &&
+            listings &&
+            listings.map((listing) => (
+              <ListingCard key={listing._id} listing={listing} />
+            ))}
+        </div>
       </div>
     </div>
   );

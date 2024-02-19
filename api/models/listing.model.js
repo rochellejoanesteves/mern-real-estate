@@ -59,7 +59,7 @@ const listingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-listingSchema.index({ name: 'text', offer: 1, furnished: 1, parking: 1, type: 1 });
+// listingSchema.index({ name: 'text', offer: 1, furnished: 1, parking: 1, type: 1 });
 
 const Listing = mongoose.model("List", listingSchema);
 

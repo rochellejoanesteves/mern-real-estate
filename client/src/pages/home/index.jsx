@@ -15,40 +15,40 @@ function Home() {
 
   console.log(salesListings);
 
-  // useEffect(() => {
-  //   const fetchOfferListings = async () => {
-  //     try {
-  //       const res = await fetch("/api/listing/get?offer=true&limit=3");
-  //       const data = await res.json();
-  //       setOfferListings(data);
-  //       fetchRentListings();
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchOfferListings = async () => {
+      try {
+        const res = await fetch("/api/listing/get?offer=true&limit=3");
+        const data = await res.json();
+        setOfferListings(data);
+        fetchRentListings();
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
-  //   const fetchRentListings = async () => {
-  //     try {
-  //       const res = await fetch("/api/listing/get?type=rent&limit=3");
-  //       const data = await res.json();
-  //       setRentListings(data);
-  //       fetchSaleListings();
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   };
+    const fetchRentListings = async () => {
+      try {
+        const res = await fetch("/api/listing/get?type=rent&limit=3");
+        const data = await res.json();
+        setRentListings(data);
+        fetchSaleListings();
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
-  //   const fetchSaleListings = async () => {
-  //     try {
-  //       const res = await fetch("/api/listing/get?type=sale&limit=3");
-  //       const data = await res.json();
-  //       setSalesListings(data);
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   };
-  //   fetchOfferListings();
-  // }, []);
+    const fetchSaleListings = async () => {
+      try {
+        const res = await fetch("/api/listing/get?type=sale&limit=3");
+        const data = await res.json();
+        setSalesListings(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchOfferListings();
+  }, []);
   return (
     <div>
       {/* top */}
